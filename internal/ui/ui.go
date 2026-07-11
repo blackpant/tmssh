@@ -159,8 +159,8 @@ func Run(cfg *config.Config) error {
 		"--pointer=▶", "--marker=▌",
 		"--header=Tab: sélection ▪ C-t: tout ▪ Enter: connect ▪ C-a/C-d: ±tag ▪ C-f: filtre tags ▪ C-g: reset ▪ C-h: historique",
 		fzfTheme,
-		"--preview=" + self + " history",
-		"--preview-window=hidden,right,45%",
+		"--preview=" + self + " info {1}",
+		"--preview-window=right,45%,wrap",
 		"--bind=ctrl-h:toggle-preview",
 		"--bind=ctrl-t:select-all", // select-all n'agit que sur les lignes matchées
 		fmt.Sprintf("--bind=ctrl-a:execute(%s tag add {+1})+reload(%s list)", self, self),

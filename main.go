@@ -23,7 +23,9 @@ Usage:
   tmssh tagfilter pick   ouvre le tag picker (filtre par tags, sémantique ET)
   tmssh tagfilter clear  efface le filtre par tags
   tmssh sync           sync bidirectionnelle ~/.ssh/config <-> hosts.json
+  tmssh info     H     preview enrichi d'un host (latence, tags, historique)
   tmssh history        affiche l'historique des connexions
+  tmssh backups        liste les backups de ~/.ssh/config
 `
 
 func main() {
@@ -87,6 +89,26 @@ func run(args []string) error {
 	case "tags":
 		for _, t := range cfg.AllTags() {
 			fmt.Println(t)
+		}
+		return nil
+
+	case "info":
+		if len(args) < 2 {
+			return fmt.Errorf("info: usage tmssh info <host>")
+		}
+		return ui.PrintInfo(cfg, args[1])
+
+	case "backups":
+		baks, err := config.ListBackups()
+		if err != nil {
+			return err
+		}
+		if len(baks) == 0 {
+			fmt.Println("aucun backup disponible")
+			return nil
+		}
+		for _, b := range baks {
+			fmt.Println(b)
 		}
 		return nil
 

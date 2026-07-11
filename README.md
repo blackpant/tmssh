@@ -31,7 +31,7 @@ Puis `tmux source-file ~/.tmux.conf`.
 | `ctrl-d` | retirer un tag commun aux hosts sélectionnés |
 | `ctrl-f` | tag picker : filtrer la liste par tags (sémantique ET) |
 | `ctrl-g` | effacer le filtre par tags |
-| `ctrl-h` | afficher l'historique des connexions |
+| `ctrl-h` | preview enrichi du host sous le curseur (latence, tags, historique, backups) |
 
 Workflow typique « connecte-moi à tout le prod web » :
 `ctrl-f` → sélectionner `prod` + `web` → `Enter` → `ctrl-t` → `Enter`.
@@ -51,6 +51,7 @@ Workflow typique « connecte-moi à tout le prod web » :
 
 - `~/.config/tmssh/hosts.json` — source de vérité des tags
 - `~/.config/tmssh/history.json` — historique des connexions
+- `~/.config/tmssh/backups/` — backups datés de `~/.ssh/config` (max 10, rotation auto)
 - `~/.ssh/config` — source de vérité des paramètres de connexion ;
   les tags y sont persistés en commentaire `# tmssh:tags=prod,web`
 
@@ -67,12 +68,18 @@ tmssh tag add H…   prompt d'ajout de tag
 tmssh tag rm H…    prompt de suppression de tag
 tmssh tags         liste les tags connus
 tmssh sync         sync ssh_config <-> hosts.json
+tmssh info H       preview enrichi d'un host
 tmssh history      historique
+tmssh backups      liste les backups de ~/.ssh/config
 ```
 
 ## Roadmap / TODO
 
 - [x] Filtre par tag dédié (tag picker, `ctrl-f`)
 - [x] Icônes configurables dans hosts.json + icône par défaut
+- [x] Backup automatique de `~/.ssh/config` avant toute sync
+- [x] Preview enrichi par host (`ctrl-h` : latence TCP, tags, historique)
+- [ ] Groupes de connexion sauvegardés (ex. `prod-web`, `all-db`)
+- [ ] TUI native (bubbletea) à la place de fzf
 - [ ] Include ssh_config (`Include ~/.ssh/config.d/*`)
 - [ ] Tests unitaires du parseur ssh_config

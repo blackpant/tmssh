@@ -99,6 +99,19 @@ func Record(hosts []string) error {
 	return save(m)
 }
 
+// ForHost retourne la slice des entrees pour un host donne (0 ou 1 element).
+// Utilise par le preview enrichi.
+func ForHost(name string) ([]*Entry, error) {
+	m, err := load()
+	if err != nil {
+		return nil, err
+	}
+	if e, ok := m[name]; ok {
+		return []*Entry{e}, nil
+	}
+	return nil, nil
+}
+
 // Print affiche l'historique trié par récence (consommé par le preview fzf).
 func Print(w io.Writer) error {
 	m, err := load()
