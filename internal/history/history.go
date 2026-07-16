@@ -10,7 +10,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/you/tmssh/internal/config"
+	"github.com/blackpant/tmssh/internal/config"
 )
 
 // Entry est une statistique de connexion par host.

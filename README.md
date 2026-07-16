@@ -67,6 +67,8 @@ tmssh connect H…   ouvre les connexions tmux
 tmssh tag add H…   prompt d'ajout de tag
 tmssh tag rm H…    prompt de suppression de tag
 tmssh tags         liste les tags connus
+tmssh tagfilter pick   ouvre le tag picker (filtre par tags, sémantique ET)
+tmssh tagfilter clear  efface le filtre par tags
 tmssh sync         sync ssh_config <-> hosts.json
 tmssh info H       preview enrichi d'un host
 tmssh history      historique

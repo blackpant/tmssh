@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/you/tmssh/internal/config"
+	"github.com/blackpant/tmssh/internal/config"
 )
 
 // Connect ouvre une connexion SSH par host :

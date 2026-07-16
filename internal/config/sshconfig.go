@@ -158,11 +158,6 @@ func Sync(cfg *Config) error {
 // writeTagsToSSHConfig réécrit ~/.ssh/config en préservant tout son contenu,
 // en remplaçant uniquement les commentaires "# tmssh:tags=" de chaque bloc Host.
 func writeTagsToSSHConfig(cfg *Config) error {
-	// Backup systématique avant toute écriture sur ~/.ssh/config.
-	if err := backupSSHConfig(); err != nil {
-		return fmt.Errorf("impossible de créer le backup : %w", err)
-	}
-
 	path, err := sshConfigPath()
 	if err != nil {
 		return err
@@ -192,6 +187,17 @@ func writeTagsToSSHConfig(cfg *Config) error {
 			}
 		}
 		out = append(out, raw)
+	}
+
+	// Rien à faire si le contenu est identique : on évite une réécriture
+	// et surtout un backup inutile (la rotation n'évince pas les anciens).
+	if strings.Join(out, "\n") == string(data) {
+		return nil
+	}
+
+	// Backup avant toute écriture effective sur ~/.ssh/config.
+	if err := backupSSHConfig(); err != nil {
+		return fmt.Errorf("impossible de créer le backup : %w", err)
 	}
 
 	tmp, err := os.CreateTemp(filepath.Dir(path), ".config-*")

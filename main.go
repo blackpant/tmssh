@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/you/tmssh/internal/config"
-	"github.com/you/tmssh/internal/history"
-	"github.com/you/tmssh/internal/tmuxctl"
-	"github.com/you/tmssh/internal/ui"
+	"github.com/blackpant/tmssh/internal/config"
+	"github.com/blackpant/tmssh/internal/history"
+	"github.com/blackpant/tmssh/internal/tmuxctl"
+	"github.com/blackpant/tmssh/internal/ui"
 )
 
 const usage = `tmssh — SSH connection picker for tmux
@@ -54,10 +54,11 @@ func run(args []string) error {
 		if len(hosts) == 0 {
 			return fmt.Errorf("connect: aucun host fourni")
 		}
-		if err := history.Record(hosts); err != nil {
+		// L'historique n'est enregistré que si la connexion a réussi.
+		if err := tmuxctl.Connect(cfg, hosts); err != nil {
 			return err
 		}
-		return tmuxctl.Connect(cfg, hosts)
+		return history.Record(hosts)
 
 	case "tag":
 		if len(args) < 3 {

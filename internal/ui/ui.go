@@ -10,7 +10,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/you/tmssh/internal/config"
+	"github.com/blackpant/tmssh/internal/config"
 )
 
 // ---------------------------------------------------------------------------
@@ -137,7 +137,7 @@ func PrintList(cfg *config.Config, w io.Writer) error {
 //   - ctrl-d   : tmssh tag rm  <hosts>       puis reload
 //   - ctrl-f   : tag picker (filtre par tags) puis reload
 //   - ctrl-g   : efface le filtre par tags    puis reload
-//   - ctrl-h   : affiche l'historique en preview
+//   - ctrl-h   : affiche/masque le preview du host
 func Run(cfg *config.Config) error {
 	// Chaque lancement repart sans filtre : le filtre ne persiste
 	// qu'entre les reloads d'une même session fzf.
@@ -157,7 +157,7 @@ func Run(cfg *config.Config) error {
 		"--with-nth=2..", // cache la colonne clé
 		"--prompt=ssh ❯ ",
 		"--pointer=▶", "--marker=▌",
-		"--header=Tab: sélection ▪ C-t: tout ▪ Enter: connect ▪ C-a/C-d: ±tag ▪ C-f: filtre tags ▪ C-g: reset ▪ C-h: historique",
+		"--header=Tab: sélection ▪ C-t: tout ▪ Enter: connect ▪ C-a/C-d: ±tag ▪ C-f: filtre tags ▪ C-g: reset ▪ C-h: preview",
 		fzfTheme,
 		"--preview=" + self + " info {1}",
 		"--preview-window=right,45%,wrap",

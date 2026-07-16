@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/you/tmssh/internal/config"
-	"github.com/you/tmssh/internal/history"
+	"github.com/blackpant/tmssh/internal/config"
+	"github.com/blackpant/tmssh/internal/history"
 )
 
 const (

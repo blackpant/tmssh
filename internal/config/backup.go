@@ -13,7 +13,8 @@ import (
 const maxBackups = 10
 
 // backupSSHConfig crée une copie datée de ~/.ssh/config dans
-// ~/.config/tmssh/backups/ avant toute opération d'écriture.
+// ~/.config/tmssh/backups/ avant toute réécriture effective
+// (writeTagsToSSHConfig ne l'appelle que si le contenu va changer).
 //
 // Format du nom : ssh_config.2006-01-02T150405.bak
 //
