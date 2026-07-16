@@ -19,7 +19,7 @@ import (
 
 const (
 	cReset = "\x1b[0m"
-	cName  = "\x1b[1;37m"  // nom du host : blanc gras
+	cName  = "\x1b[1;37m"     // nom du host : blanc gras
 	cUser  = "\x1b[38;5;245m" // user@hostname : gris
 	cIcon  = "\x1b[38;5;110m" // icône : bleu doux
 )

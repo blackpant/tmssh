@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	cSection = "\x1b[1;34m"  // titres de section : bleu gras
+	cSection = "\x1b[1;34m"     // titres de section : bleu gras
 	cKey     = "\x1b[38;5;245m" // clés : gris
-	cVal     = "\x1b[1;37m"  // valeurs : blanc gras
+	cVal     = "\x1b[1;37m"     // valeurs : blanc gras
 	cOk      = "\x1b[38;5;114m" // vert : host joignable
 	cWarn    = "\x1b[38;5;203m" // rouge : host injoignable
 	cDim     = "\x1b[38;5;240m" // gris sombre : séparateur
