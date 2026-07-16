@@ -31,6 +31,8 @@ Puis `tmux source-file ~/.tmux.conf`.
 | `ctrl-d` | retirer un tag commun aux hosts sélectionnés |
 | `ctrl-f` | tag picker : filtrer la liste par tags (sémantique ET) |
 | `ctrl-g` | effacer le filtre par tags |
+| `ctrl-s` | sauvegarder la sélection comme groupe de connexion (prompt du nom) |
+| `ctrl-e` | picker de groupes : `Enter` connecte, multi-sélection = union, `ctrl-d` supprime |
 | `ctrl-h` | preview enrichi du host sous le curseur (latence, tags, historique, backups) |
 
 Workflow typique « connecte-moi à tout le prod web » :
@@ -46,6 +48,28 @@ Workflow typique « connecte-moi à tout le prod web » :
   (palette tokyonight par défaut).
 
 `TMSSH_SYNC=1 tmssh` active `synchronize-panes` en multi-connexion.
+
+## Groupes de connexion
+
+Un groupe est l'union de hosts explicites et d'une requête de tags
+(sémantique ET), stocké dans `hosts.json` :
+
+```json
+"groups": {
+  "prod-web": { "hosts": ["bastion"], "tags": ["prod", "web"] },
+  "all-db":   { "tags": ["db"] }
+}
+```
+
+- `ctrl-s` dans l'UI sauvegarde la sélection courante sous un nom
+  (écraser un groupe existant remplace ses hosts mais conserve ses tags) ;
+- `ctrl-e` ouvre le picker : `Enter` connecte, la multi-sélection connecte
+  à l'union des groupes, `ctrl-d` supprime le groupe sous le curseur ;
+- `tmssh connect @prod-web` fonctionne aussi en CLI (mélange possible
+  avec des hosts) ;
+- le champ `tags` s'édite directement dans `hosts.json` (comme les icônes) ;
+- un host disparu de `~/.ssh/config` est ignoré à la résolution ;
+  l'historique enregistre les hosts individuels, jamais le groupe.
 
 ## Fichiers
 
@@ -63,10 +87,14 @@ automatiquement à chaque modification de tag).
 ```
 tmssh              UI fzf
 tmssh list         liste formatée (pour fzf)
-tmssh connect H…   ouvre les connexions tmux
+tmssh connect H…   ouvre les connexions tmux (H = host ou @groupe)
 tmssh tag add H…   prompt d'ajout de tag
 tmssh tag rm H…    prompt de suppression de tag
 tmssh tags         liste les tags connus
+tmssh groups       liste les groupes de connexion
+tmssh group save H…  sauvegarde un groupe (prompt du nom)
+tmssh group rm G   supprime un groupe
+tmssh group pick   picker de groupes (Enter = connexion)
 tmssh tagfilter pick   ouvre le tag picker (filtre par tags, sémantique ET)
 tmssh tagfilter clear  efface le filtre par tags
 tmssh sync         sync ssh_config <-> hosts.json
@@ -81,7 +109,7 @@ tmssh backups      liste les backups de ~/.ssh/config
 - [x] Icônes configurables dans hosts.json + icône par défaut
 - [x] Backup automatique de `~/.ssh/config` avant toute sync
 - [x] Preview enrichi par host (`ctrl-h` : latence TCP, tags, historique)
-- [ ] Groupes de connexion sauvegardés (ex. `prod-web`, `all-db`)
-- [ ] TUI native (bubbletea) à la place de fzf
+- [x] Groupes de connexion sauvegardés (ex. `prod-web`, `all-db`)
+- [ ] ~~TUI native (bubbletea) à la place de fzf~~ (abandonné : l'architecture fzf + binaire ré-entrant est assumée)
 - [ ] Include ssh_config (`Include ~/.ssh/config.d/*`)
 - [ ] Tests unitaires du parseur ssh_config

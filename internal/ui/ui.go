@@ -137,6 +137,8 @@ func PrintList(cfg *config.Config, w io.Writer) error {
 //   - ctrl-d   : tmssh tag rm  <hosts>       puis reload
 //   - ctrl-f   : tag picker (filtre par tags) puis reload
 //   - ctrl-g   : efface le filtre par tags    puis reload
+//   - ctrl-s   : sauvegarde la sélection comme groupe (prompt du nom)
+//   - ctrl-e   : picker de groupes (become : remplace l'UI principale)
 //   - ctrl-h   : affiche/masque le preview du host
 func Run(cfg *config.Config) error {
 	// Chaque lancement repart sans filtre : le filtre ne persiste
@@ -157,7 +159,7 @@ func Run(cfg *config.Config) error {
 		"--with-nth=2..", // cache la colonne clé
 		"--prompt=ssh ❯ ",
 		"--pointer=▶", "--marker=▌",
-		"--header=Tab: sélection ▪ C-t: tout ▪ Enter: connect ▪ C-a/C-d: ±tag ▪ C-f: filtre tags ▪ C-g: reset ▪ C-h: preview",
+		"--header=Tab: sélection ▪ C-t: tout ▪ Enter: connect ▪ C-a/C-d: ±tag ▪ C-f: filtre tags ▪ C-g: reset ▪ C-s: +groupe ▪ C-e: groupes ▪ C-h: preview",
 		fzfTheme,
 		"--preview=" + self + " info {1}",
 		"--preview-window=right,45%,wrap",
@@ -167,6 +169,8 @@ func Run(cfg *config.Config) error {
 		fmt.Sprintf("--bind=ctrl-d:execute(%s tag rm {+1})+reload(%s list)", self, self),
 		fmt.Sprintf("--bind=ctrl-f:execute(%s tagfilter pick)+reload(%s list)+first", self, self),
 		fmt.Sprintf("--bind=ctrl-g:execute-silent(%s tagfilter clear)+reload(%s list)+first", self, self),
+		fmt.Sprintf("--bind=ctrl-s:execute(%s group save {+1})+reload(%s list)", self, self),
+		fmt.Sprintf("--bind=ctrl-e:become(%s group pick)", self),
 	}
 
 	cmd := exec.Command("fzf", args...)

@@ -29,6 +29,9 @@ type Config struct {
 	Icons       map[string]string `json:"icons,omitempty"`
 	DefaultIcon string            `json:"default_icon,omitempty"`
 
+	// Groups : groupes de connexion nommés (voir groups.go).
+	Groups map[string]Group `json:"groups,omitempty"`
+
 	path string // chemin du fichier, non sérialisé
 }
 
